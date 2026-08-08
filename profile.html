@@ -7,6 +7,52 @@
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
 <title>My Profile | Healthtech</title>
     <link rel="stylesheet" href="styles.css" />
+    <style>
+        .member-edit,
+        .member-save {
+            background: var(--offwhite);
+            border: 1px solid var(--border);
+            padding: 10px 26px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s;
+            font-family: inherit;
+        }
+        .member-edit {
+            color: var(--navy);
+        }
+        .member-save {
+            color: var(--green-dark);
+        }
+        .member-edit:hover {
+            background: var(--navy);
+            color: #fff;
+            border-color: var(--navy);
+        }
+        .member-save:hover {
+            background: var(--green);
+            color: #fff;
+            border-color: var(--green);
+        }
+        .member-bottom-actions {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding-top: 16px;
+            border-top: 1px dashed var(--border);
+        }
+        /* Read-only (view) mode */
+        #profileForm.view-mode .form-group input,
+        #profileForm.view-mode .form-group select {
+            background: var(--green-light);
+            color: var(--green-dark);
+            font-weight: 600;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body class="auth-theme profile-page">
     <div id="main-content" class="main-content">
@@ -60,7 +106,10 @@
                                 <input type="number" id="pfWeight" min="2" max="400" step="0.1" inputmode="decimal" />
                             </div>
                         </div>
-                        <button type="submit" class="btn-primary">Save Changes</button>
+<div class="member-bottom-actions">
+                            <button type="button" class="member-edit" id="pfEditBtn">✏️ Edit</button>
+                            <button type="submit" class="btn-primary" id="pfSaveBtn" hidden>Save Changes</button>
+                        </div>
                         <div class="form-status" id="profileStatus"></div>
                     </form>
                 </div>
@@ -96,8 +145,33 @@
             document.getElementById("pfHeight").value = user.height || "";
             document.getElementById("pfWeight").value = user.weight || "";
 
-            const form = document.getElementById("profileForm");
+const form = document.getElementById("profileForm");
             const status = document.getElementById("profileStatus");
+            const editBtn = document.getElementById("pfEditBtn");
+            const saveBtn = document.getElementById("pfSaveBtn");
+            const inputs = form.querySelectorAll("input, select");
+
+            function lockProfile() {
+                form.classList.add("view-mode");
+                inputs.forEach((i) => (i.disabled = true));
+                saveBtn.hidden = true;
+                editBtn.hidden = false;
+            }
+
+            function unlockProfile() {
+                form.classList.remove("view-mode");
+                inputs.forEach((i) => (i.disabled = false));
+                saveBtn.hidden = false;
+                editBtn.hidden = true;
+                status.textContent = "";
+            }
+
+            // Start in read-only view mode — show Edit, hide Save
+            lockProfile();
+
+            // Edit → unlock fields and show Save
+            editBtn.addEventListener("click", unlockProfile);
+
             if (form) {
                 form.addEventListener("submit", function (e) {
                     e.preventDefault();
@@ -117,6 +191,8 @@
                     }
                     status.textContent = "✅ Profile updated!";
                     status.style.color = "#138808";
+                    // Lock the profile back to read-only after saving
+                    lockProfile();
                 });
             }
         });

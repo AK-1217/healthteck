@@ -791,8 +791,8 @@ h1, h2, h3, h4, h5 {
 
 .btn-primary:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 24px rgba(13, 94, 6, 0.4);
-    background: var(--green-dark);
+    box-shadow: 0 10px 24px rgba(242, 140, 26, 0.4);
+    background: var(--gradient-bright);
     text-decoration: none;
 }
 
@@ -1040,8 +1040,8 @@ h1, h2, h3, h4, h5 {
     display: flex;
     align-items: center;
     gap: 8px;
-    background: var(--green-light);
-    border: 2px solid var(--green);
+    background: var(--offwhite);
+    border: 2px solid var(--border);
     border-radius: 50px;
     padding: 6px 8px 6px 18px;
     transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
@@ -2182,6 +2182,22 @@ textarea:focus-visible,
     background: linear-gradient(160deg, #fff6e8 0%, #ffedd0 45%, #ffe1b3 100%);
 }
 
+/* Login button: solid saffron (orange) — no green in normal or hover state */
+.auth-theme.login-page .btn-primary {
+    background: var(--saffron);
+    color: #fff;
+    border: none;
+    box-shadow: 0 6px 18px rgba(242, 140, 26, 0.35);
+}
+
+.auth-theme.login-page .btn-primary:hover {
+    background: var(--saffron-dark);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(242, 140, 26, 0.4);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
 .auth-theme.login-page::before {
     background:
         radial-gradient(circle at 18% 22%, rgba(255, 153, 51, 0.16), transparent 42%),
@@ -2418,6 +2434,23 @@ textarea:focus-visible,
     margin-top: 14px;
 }
 
+/* ============ Home screen Login Now buttons: solid saffron (no green/white on hover) ============ */
+.search-login-notice .btn-primary,
+.auth-modal-actions .btn-primary {
+    background: var(--saffron);
+    color: #fff;
+    box-shadow: 0 6px 18px rgba(242, 140, 26, 0.35);
+}
+
+.search-login-notice .btn-primary:hover,
+.auth-modal-actions .btn-primary:hover {
+    background: var(--saffron-dark);
+    color: #fff;
+    box-shadow: 0 10px 24px rgba(242, 140, 26, 0.4);
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
 /* ============ Bookmarks page: keep btn-primary saffron on hover ============ */
 body.bookmarks-page .btn-primary {
     background: var(--gradient-bright);
@@ -2558,5 +2591,271 @@ body.logged-in .side-box .auth-guest-only {
     }
     .header-search {
         max-width: 100%;
+    }
+}
+
+/* =========================================================
+   Fully Responsive / Fluid Layout
+   Ensures the whole website fits each device automatically.
+   ========================================================= */
+
+html {
+    overflow-x: clip;
+}
+
+body {
+    overflow-x: clip;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Shared fluid width helper */
+.wrap,
+.slide-inner {
+    width: 100%;
+    max-width: 1180px;
+    padding-left: 16px;
+    padding-right: 16px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+}
+
+/* Prevent overflowing grids */
+.systems-grid,
+.card-grid,
+.footer-grid,
+.content-row,
+.auth-card,
+.search-card,
+.state-selector-card,
+.news-panel,
+.service-grid,
+.stat-grid {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Make the recommendation/search card grid scale fluidly on small screens */
+.card-grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(320px, 100%), 1fr));
+}
+
+.item-card {
+    min-width: 0;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Header: keep the brand, search and actions balanced without overflow */
+.header-main {
+    flex-wrap: nowrap;
+}
+
+.header-search {
+    min-width: 0;
+}
+
+.header-search input {
+    min-width: 0;
+}
+
+/* Images and media always fit their container */
+img,
+video,
+canvas,
+svg,
+iframe {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Buttons and inputs never overflow their container */
+input,
+select,
+textarea,
+button {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Flexible tables */
+table {
+    width: 100%;
+    max-width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* --- Tablet / Medium screens --- */
+@media (min-width: 601px) and (max-width: 1024px) {
+    .banner-slider {
+        height: 300px;
+    }
+    .slide-inner h2 {
+        font-size: 2.1rem;
+    }
+    .section-title {
+        font-size: 1.5rem;
+    }
+    .systems-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+    }
+    .card-grid {
+        gap: 14px;
+    }
+    .content-row {
+        grid-template-columns: 1fr;
+        gap: 22px;
+    }
+    .footer-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 18px;
+    }
+}
+
+/* --- Mobile / Small screens --- */
+@media (max-width: 600px) {
+    html,
+    body {
+        font-size: 15px;
+    }
+    .wrap,
+    .slide-inner {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    .banner-slider {
+        height: 340px;
+    }
+    .slide-inner h2 {
+        font-size: 1.5rem;
+    }
+    .slide-inner p {
+        font-size: 1rem;
+    }
+    .slide-eyebrow {
+        font-size: 0.7rem;
+    }
+    .section-title {
+        font-size: 1.35rem;
+    }
+    .section-sub {
+        font-size: 0.92rem;
+    }
+    h1 {
+        font-size: 1.6rem;
+    }
+    h2 {
+        font-size: 1.3rem;
+    }
+    h3 {
+        font-size: 1.1rem;
+    }
+    /* Stack layout containers for easier reading */
+    .systems-grid,
+    .footer-grid,
+    .card-grid,
+    .state-stats {
+        grid-template-columns: 1fr;
+    }
+    .content-row {
+        grid-template-columns: 1fr;
+        padding-top: 24px;
+    }
+    .card-grid {
+        gap: 14px;
+    }
+    .search-card,
+    .auth-card,
+    .state-selector-card,
+    .contact-form {
+        padding: 18px 14px;
+        border-radius: 16px;
+    }
+    .search-bar {
+        border-radius: 18px;
+        padding: 6px;
+    }
+    .search-btn {
+        padding: 11px 18px;
+        font-size: 0.92rem;
+    }
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+    .filter-group {
+        justify-content: flex-start;
+    }
+    .quick-tags {
+        gap: 6px;
+    }
+    .quick-tag {
+        font-size: 0.76rem;
+    }
+    .results-header {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .results-header h2 {
+        font-size: 1.2rem;
+    }
+    .banner-btn {
+        width: 36px;
+        height: 36px;
+        font-size: 1rem;
+    }
+    .scroll-top {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+        right: 16px;
+        bottom: 16px;
+    }
+    .footer-grid {
+        gap: 24px;
+    }
+    .news-panel {
+        padding: 16px;
+    }
+    .brand-text h1 {
+        font-size: 1.05rem;
+    }
+    .brand-text p {
+        font-size: 0.68rem;
+    }
+    .logo {
+        font-size: 1.7rem;
+    }
+    .header-main {
+        gap: 10px;
+    }
+}
+
+/* --- Extra small phones --- */
+@media (max-width: 380px) {
+    .header-search {
+        display: none;
+    }
+    .menu-toggle {
+        width: 38px;
+        height: 38px;
+    }
+    .profile-btn {
+        padding: 5px;
+    }
+    .slide-inner h2 {
+        font-size: 1.3rem;
+    }
+    .banner-slider {
+        height: 320px;
+    }
+    .item-card {
+        padding: 14px;
     }
 }

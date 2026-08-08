@@ -117,8 +117,14 @@
                     const height = document.getElementById("regHeight").value.trim();
                     const weight = document.getElementById("regWeight").value.trim();
 
-                    if (!name || !age || !gender || !email || !password || !height || !weight) {
+if (!name || !age || !gender || !email || !password || !height || !weight) {
                         registerStatus.textContent = "⚠️ Please fill in all fields.";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    // Only Gmail addresses are allowed
+                    if (!/^[^\s@]+@gmail\.com$/i.test(email)) {
+                        registerStatus.textContent = "⚠️ Please use a valid Gmail address (e.g. you@gmail.com).";
                         registerStatus.style.color = "#c0392b";
                         return;
                     }
@@ -137,13 +143,15 @@
                         registerStatus.style.color = "#c0392b";
                         return;
                     }
-                    if (password.length < 6) {
+if (password.length < 6) {
                         registerStatus.textContent = "⚠️ Password must be at least 6 characters.";
                         registerStatus.style.color = "#c0392b";
                         return;
                     }
 
                     if (window.HealthtechAuth) {
+                        // Store the user in the registered users store so they can log in later
+                        window.HealthtechAuth.register(name, email, password, parseInt(age, 10), gender, parseFloat(height), parseFloat(weight));
                         window.HealthtechAuth.login(name, email, parseInt(age, 10), gender, parseFloat(height), parseFloat(weight));
                         document.dispatchEvent(new Event("HealthtechAuthChanged"));
                     }

@@ -497,7 +497,6 @@ menuItems.forEach((item) => {
             '<p id="authModalMsg">Please login to your Healthtech account to access this feature and view the data.</p>' +
             '<div class="auth-modal-actions">' +
             '<a href="login.html" class="btn-primary">Login Now</a>' +
-            '<a href="register.html" class="btn-secondary">Create an Account</a>' +
             "</div></div>";
 
         overlay.addEventListener("click", (e) => {
@@ -528,6 +527,65 @@ menuItems.forEach((item) => {
         return false;
     }
 
+// ---- Registered users store ---- 
+    const REGISTERED_KEY = "healthtech_registered";
+
+    function getRegisteredUsers() {
+        try {
+            const raw = localStorage.getItem(REGISTERED_KEY);
+            return raw ? JSON.parse(raw) : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function saveRegisteredUsers(users) {
+        localStorage.setItem(REGISTERED_KEY, JSON.stringify(users));
+    }
+
+    function isRegistered(email) {
+        const users = getRegisteredUsers();
+        return users.some(function (u) {
+            return String(u.email || "").toLowerCase() === String(email || "").toLowerCase();
+        });
+    }
+
+function getRegisteredUser(email) {
+        const users = getRegisteredUsers();
+        var match = null;
+        users.forEach(function (u) {
+            if (String(u.email || "").toLowerCase() === String(email || "").toLowerCase()) {
+                match = u;
+            }
+        });
+        return match;
+    }
+
+    function verifyCredentials(email, password) {
+        const users = getRegisteredUsers();
+        return users.some(function (u) {
+            return String(u.email || "").toLowerCase() === String(email || "").toLowerCase() &&
+                String(u.password || "") === String(password || "");
+        });
+    }
+
+    function registerUser(name, email, password, age, gender, height, weight) {
+        const users = getRegisteredUsers();
+        // Avoid duplicate registration
+        if (!isRegistered(email)) {
+            users.push({
+                name: name,
+                email: email,
+                password: password,
+                age: age || null,
+                gender: gender || null,
+                height: height || null,
+                weight: weight || null
+            });
+            saveRegisteredUsers(users);
+        }
+    }
+
 // Expose helpers for login/register pages
     window.HealthtechAuth = {
         getCurrentUser: getCurrentUser,
@@ -543,6 +601,10 @@ menuItems.forEach((item) => {
             }));
             document.body.classList.add("logged-in");
         },
+register: registerUser,
+        isRegistered: isRegistered,
+        getRegisteredUser: getRegisteredUser,
+        verifyCredentials: verifyCredentials,
         logout: function () {
             localStorage.removeItem(AUTH_KEY);
             document.body.classList.remove("logged-in");
@@ -735,6 +797,19 @@ const observer = new IntersectionObserver(
         mo.observe(document.body, { childList: true, subtree: true });
     }
 
+    // ---- Gate "System of Medicine" cards behind login ----
+    function initSystemCardGate() {
+        document.addEventListener("click", function (e) {
+            const card = e.target.closest(".system-card");
+            if (!card) return;
+            // Allow navigation when already logged in
+            if (isLoggedIn()) return;
+            e.preventDefault();
+            e.stopPropagation();
+            openAuthModal("Please login to your Healthtech account to explore this system of medicine.");
+        });
+    }
+
     // ---- Init ----
     document.addEventListener("DOMContentLoaded", () => {
         buildHeader();
@@ -744,5 +819,6 @@ initCarousel();
         handleSearchQuery();
         initScrollTop();
         initRevealOnScroll();
+        initSystemCardGate();
     });
 })();

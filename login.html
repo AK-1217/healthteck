@@ -78,20 +78,36 @@
             if (loginForm) {
                 loginForm.addEventListener("submit", function (e) {
                     e.preventDefault();
-                    const email = document.getElementById("loginEmail").value.trim();
+const email = document.getElementById("loginEmail").value.trim();
                     const password = document.getElementById("loginPassword").value.trim();
                     if (!email || !password) {
                         loginStatus.textContent = "⚠️ Please enter both email and password.";
                         loginStatus.style.color = "#c0392b";
                         return;
                     }
-                    // Demo login: retain existing profile data if available, else derive from email
-                    const existing = (window.HealthtechAuth && window.HealthtechAuth.getCurrentUser()) || {};
-                    const name = existing.name ||
-                        (email.split("@")[0].replace(/[^a-zA-Z ]/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); }) || "User");
+                    // Only Gmail addresses are allowed
+                    if (!/^[^\s@]+@gmail\.com$/i.test(email)) {
+                        loginStatus.textContent = "⚠️ Please use a valid Gmail address (e.g. you@gmail.com).";
+                        loginStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    // Only registered users can log in
+                    if (!window.HealthtechAuth || !window.HealthtechAuth.isRegistered(email)) {
+                        loginStatus.textContent = "⚠️ This email is not registered. Please create an account first.";
+                        loginStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    if (!window.HealthtechAuth.verifyCredentials(email, password)) {
+                        loginStatus.textContent = "⚠️ Incorrect password. Please try again.";
+                        loginStatus.style.color = "#c0392b";
+                        return;
+                    }
+// Look up the registered user's profile to retain their details
+                    const registered = window.HealthtechAuth.getRegisteredUser(email) || {};
+                    const name = registered.name || "User";
 
                     if (window.HealthtechAuth) {
-                        window.HealthtechAuth.login(name, email, existing.age, existing.gender, existing.height, existing.weight);
+                        window.HealthtechAuth.login(name, email, registered.age, registered.gender, registered.height, registered.weight);
                         document.dispatchEvent(new Event("HealthtechAuthChanged"));
                     }
                     loginStatus.textContent = "✅ Login successful! Redirecting…";
