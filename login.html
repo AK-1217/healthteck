@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Sign in to your Healthtech account to search Ayurvedic drugs & formulations, save bookmarks and personalize your experience." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+<title>Login | Healthtech</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-theme login-page">
+    <div id="main-content" class="main-content">
+        <section class="page-banner">
+            <div class="wrap">
+                <h1>Account Access</h1>
+                <p class="breadcrumb"><a href="index.html">Home</a> / Login</p>
+            </div>
+        </section>
+
+        <section class="wrap content-row">
+            <div class="content-main">
+                <!-- Login Form -->
+                <div class="auth-card">
+                    <div class="auth-card-head">
+                        <span class="auth-card-icon">🔐</span>
+                        <div>
+                            <h2>Welcome back</h2>
+                            <p>Sign in to your Healthtech account to continue.</p>
+                        </div>
+                    </div>
+                    <form id="loginForm">
+                        <div class="form-group">
+                            <label for="loginEmail">Email address</label>
+                            <input type="email" id="loginEmail" placeholder="you@example.com" autocomplete="email" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="Enter your password" autocomplete="current-password" required />
+                        </div>
+                        <button type="submit" class="btn-primary btn-block">Login</button>
+                        <div class="form-status" id="loginStatus"></div>
+                    </form>
+                    <p style="text-align:center; margin-top:14px; font-size:0.9rem; color:var(--muted);">
+                        Don't have an account? <a href="register.html">Register</a>.
+                    </p>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="side-box">
+                    <h3>Why sign in?</h3>
+                    <ul>
+                        <li>💾 Save drug &amp; formulation bookmarks</li>
+                        <li>📊 Track your favourite systems of medicine</li>
+                        <li>🧘 Personalize your health profile</li>
+                        <li>🔔 Get updates on new resources</li>
+                    </ul>
+                </div>
+                <div class="side-box">
+                    <h3>Your privacy</h3>
+                    <p style="font-size:0.85rem; color:var(--muted);">Your profile details (age &amp; gender) are stored securely and used only to personalize your Healthtech experience.</p>
+                </div>
+            </aside>
+        </section>
+    </div>
+
+    <script src="common.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // If already logged in, go straight to home
+            if (window.HealthtechAuth && window.HealthtechAuth.isLoggedIn()) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // ---- Login form ----
+            const loginForm = document.getElementById("loginForm");
+            const loginStatus = document.getElementById("loginStatus");
+            if (loginForm) {
+                loginForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const email = document.getElementById("loginEmail").value.trim();
+                    const password = document.getElementById("loginPassword").value.trim();
+                    if (!email || !password) {
+                        loginStatus.textContent = "⚠️ Please enter both email and password.";
+                        loginStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    // Demo login: retain existing profile data if available, else derive from email
+                    const existing = (window.HealthtechAuth && window.HealthtechAuth.getCurrentUser()) || {};
+                    const name = existing.name ||
+                        (email.split("@")[0].replace(/[^a-zA-Z ]/g, " ").replace(/\b\w/g, function (c) { return c.toUpperCase(); }) || "User");
+
+                    if (window.HealthtechAuth) {
+                        window.HealthtechAuth.login(name, email, existing.age, existing.gender, existing.height, existing.weight);
+                        document.dispatchEvent(new Event("HealthtechAuthChanged"));
+                    }
+                    loginStatus.textContent = "✅ Login successful! Redirecting…";
+                    loginStatus.style.color = "#138808";
+                    setTimeout(function () { window.location.href = "index.html"; }, 800);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

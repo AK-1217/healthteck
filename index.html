@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Healthtech is an educational resource on traditional systems of medicine — Ayurveda, Yoga, Unani, Siddha and Homoeopathy. Explore drugs, formulations and healthcare infrastructure." />
+    <meta name="keywords" content="Healthtech, Ayurveda, Yoga, Unani, Siddha, Homoeopathy, traditional medicine, drug search, formulation" />
+    <meta name="author" content="Healthtech" />
+    <meta property="og:title" content="Healthtech | Traditional Systems of Medicine" />
+    <meta property="og:description" content="An educational resource on traditional systems of medicine — Ayurveda, Yoga, Unani, Siddha & Homoeopathy." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="index.html" />
+    <meta name="theme-color" content="#138808" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+    <title>Healthtech | Traditional Systems of Medicine</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div id="main-content" class="main-content">
+        <!-- Banner Carousel -->
+        <section class="banner" aria-label="Highlighted topics">
+            <div class="banner-slider" id="bannerSlider">
+<div class="banner-slide active" style="background: linear-gradient(135deg,#1f4d3a,#2e7d5b);">
+                    <div class="slide-art" aria-hidden="true"></div>
+                    <div class="wrap slide-inner">
+                        <span class="slide-eyebrow">🌿 Traditional Wellness</span>
+                        <h2>Welcome to Healthtech</h2>
+                        <div class="slide-accent"></div>
+                        <p>An educational resource on traditional systems of medicine — Ayurveda, Yoga, Unani, Siddha &amp; Homoeopathy.</p>
+                        <a class="btn-primary" href="#search">Explore Drugs &amp; Formulations</a>
+                    </div>
+                </div>
+                <div class="banner-slide" style="background: linear-gradient(135deg,#b45309,#d97706 55%,#f59e0b);">
+                    <div class="slide-art" aria-hidden="true"></div>
+                    <div class="wrap slide-inner">
+                        <span class="slide-eyebrow">💊 Classical Remedies</span>
+                        <h2>Drug &amp; Formulation Recommender</h2>
+                        <div class="slide-accent"></div>
+                        <p>Search classical Ayurvedic remedies by symptom or pharmacological property.</p>
+                        <a class="btn-primary btn-shadow-hover" href="#search">Start Searching</a>
+                    </div>
+                </div>
+                <div class="banner-slide" style="background: linear-gradient(135deg,#155e75,#0b72a0 55%,#38bdf8);">
+                    <div class="slide-art" aria-hidden="true"></div>
+                    <div class="wrap slide-inner">
+                        <span class="slide-eyebrow">🧘 Mind &amp; Body</span>
+                        <h2>International Day of Yoga</h2>
+                        <div class="slide-accent"></div>
+                        <p>Join celebrations on 21st June to promote global health and wellbeing.</p>
+                        <a class="btn-primary" href="yoga.html">Learn About Yoga</a>
+                    </div>
+                </div>
+            </div>
+            <button class="banner-btn prev" id="bannerPrev" aria-label="Previous slide">&#10094;</button>
+            <button class="banner-btn next" id="bannerNext" aria-label="Next slide">&#10095;</button>
+        </section>
+
+<!-- Embedded Drug & Formulation Search -->
+        <section id="search" class="wrap search-block">
+            <h2 class="section-title">Healthtech Suggester — Drug &amp; Formulation Search</h2>
+            <p class="section-sub">
+                Search for an Ayurvedic drug (Dravya) or formulation (Yoga) by symptom or pharmacological property.
+            </p>
+
+<div class="search-card">
+                <div class="search-bar" id="searchBar">
+                    <span class="search-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <label for="searchInput" class="sr-only">Search for a symptom or pharmacological property</label>
+                    <input
+                        type="text"
+                        id="searchInput"
+                        placeholder="Search symptom (e.g., Fever, Cough) or property (e.g., Deepana, Vata Shamaka)…"
+                        autocomplete="off"
+                    />
+                    <button type="button" class="search-clear" id="searchClear" aria-label="Clear search" hidden>
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+                    <button type="button" class="search-btn" id="searchBtn">Search</button>
+                </div>
+
+<div class="filter-bar">
+                    <div class="filter-group">
+                        <span class="filter-label">Family Member</span>
+                        <div class="select-wrap">
+                            <select id="familyMemberFilter">
+                                <option value="myself">👤 My Self</option>
+                                <option value="member1">👪 Family Member 1</option>
+                                <option value="member2">👪 Family Member 2</option>
+                                <option value="member3">👪 Family Member 3</option>
+                                <option value="member4">👪 Family Member 4</option>
+                            </select>
+                            <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Filter by source</span>
+                        <div class="select-wrap">
+                            <select id="bookFilter">
+                                <option value="all">All Category</option>
+                                <option value="respiratory">Respiratory &amp; ENT Ailments</option>
+                                <option value="digestive">Digestive &amp; Gastrointestinal Disorders</option>
+                                <option value="metabolic">Metabolic &amp; Systemic Conditions</option>
+                                <option value="joint">Joint Bones &amp; Muscul Disorders</option>
+                                <option value="skin">Skin &amp; Hair Conditions</option>
+                                <option value="neurological">Neurological, Mental &amp; Sleep Disorders</option>
+                <option value="mens">Men's Women's &amp; Urinary Health</option>
+                                <option value="fever">Fever &amp; Miscellaneous Ailments</option>
+                            </select>
+                            <svg class="select-chevron" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                        </div>
+                    </div>
+                    <div class="filter-group">
+                        <span class="filter-label">Show</span>
+<label class="switch">
+                            <input type="checkbox" id="showDrugs" checked />
+                            <span class="slider"></span>
+                            <span class="switch-label">Medicines</span>
+                        </label>
+                        <label class="switch">
+                            <input type="checkbox" id="showFormulations" checked />
+                            <span class="slider"></span>
+                            <span class="switch-label">Yoga</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="quick-tags" id="quickTags"></div>
+            </div>
+
+            <div id="searchLoginNotice" class="search-login-notice" hidden>
+                <h3>🔐 Login to view recommendations</h3>
+                <p>Sign in to your Healthtech account to search Ayurvedic drugs &amp; formulations by symptom and see personalized recommendations.</p>
+                <a href="login.html" class="btn-primary">Login Now</a>
+            </div>
+
+            <div id="results">
+                <div class="results-header" id="resultsHeader">
+                    <h2>Recommendations</h2>
+                    <span id="resultsCount" class="count-badge">0 results</span>
+                </div>
+
+                <div id="drugResults" class="result-group">
+<h3 class="group-title">🌾 Dravyas</h3>
+                    <div id="drugCards" class="card-grid"></div>
+                </div>
+
+                <div id="formulationResults" class="result-group">
+<h3 class="group-title">🧪 Yogas</h3>
+                    <div id="formulationCards" class="card-grid"></div>
+                </div>
+
+<div id="emptyState" class="empty-state" hidden>
+                    <p>🔍 No matching Ayurvedic recommendations found.</p>
+                    <p class="hint">Try a different symptom, property, or clear the filters.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Intro -->
+        <section class="wrap intro">
+            <h2>An Integrated Approach to Traditional Healthcare</h2>
+            <p>
+                Traditional systems of medicine continue to play a vital role in healthcare through the
+                ancient wisdom of India's systems of healing — Ayurveda, Yoga, Unani, Siddha and Homoeopathy.
+            </p>
+        </section>
+
+        <!-- Systems of Medicine -->
+        <section class="wrap systems">
+            <h2 class="section-title">Systems of Medicine</h2>
+            <div class="systems-grid">
+                <a class="system-card" href="ayurveda.html">
+                    <div class="system-icon">🌿</div>
+                    <h3>Ayurveda</h3>
+                    <p>The science of life — balancing Vata, Pitta and Kapha through herbs and holistic living.</p>
+                </a>
+                <a class="system-card" href="yoga.html">
+                    <div class="system-icon">🧘</div>
+                    <h3>Yoga &amp; Naturopathy</h3>
+                    <p>Harmonizing body, mind, and nature through postures, breath, and natural healing.</p>
+                </a>
+                <a class="system-card" href="unani.html">
+                    <div class="system-icon">⚕️</div>
+                    <h3>Unani</h3>
+                    <p>The Greek-Arabic system based on the equilibrium of four humors.</p>
+                </a>
+                <a class="system-card" href="siddha.html">
+                    <div class="system-icon">🪷</div>
+                    <h3>Siddha</h3>
+                    <p>The ancient Tamil system emphasizing minerals, metals, and spiritual discipline.</p>
+                </a>
+                <a class="system-card" href="homeopathy.html">
+                    <div class="system-icon">💧</div>
+                    <h3>Homoeopathy</h3>
+                    <p>"Like cures like" — a gentle, individualized system of healing.</p>
+                </a>
+                <a class="system-card" href="about.html">
+                    <div class="system-icon">🏛️</div>
+                    <h3>About Healthtech</h3>
+                    <p>Vision, mission, and objectives of this traditional medicine educational resource.</p>
+                </a>
+            </div>
+        </section>
+
+        <!-- India States Selector -->
+        <section class="wrap india-map-section">
+            <h2 class="section-title">India Healthtech States</h2>
+            <p class="section-sub">Select an Indian state or union territory to view its healthcare infrastructure details.</p>
+
+            <div class="state-selector-card">
+                <label for="stateSelect" class="state-select-label">Choose a state / union territory:</label>
+                <select id="stateSelect" class="state-select" aria-label="Select an Indian state">
+                    <option value="">— Select a state —</option>
+                </select>
+            </div>
+
+            <div class="state-details" id="stateDetails" hidden></div>
+        </section>
+
+        <!-- News & Updates -->
+        <section class="wrap news">
+            <h2 class="section-title">News &amp; Updates</h2>
+            <div class="news-tabs">
+                <button class="news-tab active" data-target="news-latest">Latest</button>
+                <button class="news-tab" data-target="news-tenders">Tenders</button>
+                <button class="news-tab" data-target="news-notices">Notices</button>
+                <button class="news-tab" data-target="news-press">Press Releases</button>
+            </div>
+
+<div class="news-panel active" id="news-latest">
+                <ul class="news-list">
+                    <li>New initiative launches to promote traditional medicine research collaborations.</li>
+                    <li>World Ayurveda Day celebrations scheduled across the country.</li>
+                    <li>Ayurveda wellness clinics to be expanded to more districts.</li>
+                </ul>
+            </div>
+            <div class="news-panel" id="news-tenders">
+                <ul class="news-list">
+                    <li>Notice inviting tenders for traditional medicine infrastructure development.</li>
+                    <li>Expression of interest for medicinal plant conservation projects.</li>
+                </ul>
+            </div>
+            <div class="news-panel" id="news-notices">
+                <ul class="news-list">
+                    <li>Public notice on quality standards for herbal drugs.</li>
+                    <li>Admission notices for traditional medicine under-graduate courses.</li>
+                </ul>
+            </div>
+            <div class="news-panel" id="news-press">
+                <ul class="news-list">
+                    <li>Press release: traditional medicine exports continue to grow globally.</li>
+                    <li>Statement on integrating natural medicine in public health programs.</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+    <script src="common.js"></script>
+    <script src="india-map.js"></script>
+</body>
+</html>

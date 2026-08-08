@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="View and update your Healthtech profile details — name, email, age, gender, height and weight." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+<title>My Profile | Healthtech</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-theme profile-page">
+    <div id="main-content" class="main-content">
+        <section class="page-banner">
+            <div class="wrap">
+                <h1>My Profile</h1>
+                <p class="breadcrumb"><a href="index.html">Home</a> / Profile</p>
+            </div>
+        </section>
+
+        <section class="wrap content-row">
+            <div class="content-main">
+                <div class="contact-form">
+                    <h2>Profile details</h2>
+                    <p>Your Healthtech account information. Age &amp; gender are set during registration.</p>
+
+                    <form id="profileForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="pfName">Full name</label>
+                                <input type="text" id="pfName" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="pfEmail">Email address</label>
+                                <input type="email" id="pfEmail" required />
+                            </div>
+                        </div>
+<div class="form-grid">
+                            <div class="form-group">
+                                <label for="pfAge">Age</label>
+                                <input type="number" id="pfAge" min="1" max="120" inputmode="numeric" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pfGender">Gender</label>
+                                <select id="pfGender">
+                                    <option value="">Select…</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                    <option>Prefer not to say</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="pfHeight">Height <span style="color:var(--muted); font-weight:400;">(cm)</span></label>
+                                <input type="number" id="pfHeight" min="50" max="280" step="0.1" inputmode="decimal" />
+                            </div>
+                            <div class="form-group">
+                                <label for="pfWeight">Weight <span style="color:var(--muted); font-weight:400;">(kg)</span></label>
+                                <input type="number" id="pfWeight" min="2" max="400" step="0.1" inputmode="decimal" />
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <div class="form-status" id="profileStatus"></div>
+                    </form>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="side-box">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="profile.html">👤 My Profile</a></li>
+                        <li><a href="bookmarks.html">⭐ My Bookmarks</a></li>
+                        <li class="auth-guest-only"><a href="login.html">🔐 Login</a></li>
+                        <li class="auth-guest-only"><a href="register.html">📝 Register</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </section>
+    </div>
+
+    <script src="common.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = (window.HealthtechAuth && window.HealthtechAuth.getCurrentUser()) || null;
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+
+            // Prefill profile fields with logged-in user data
+            document.getElementById("pfName").value = user.name || "";
+            document.getElementById("pfEmail").value = user.email || "";
+            document.getElementById("pfAge").value = user.age || "";
+            document.getElementById("pfGender").value = user.gender || "";
+            document.getElementById("pfHeight").value = user.height || "";
+            document.getElementById("pfWeight").value = user.weight || "";
+
+            const form = document.getElementById("profileForm");
+            const status = document.getElementById("profileStatus");
+            if (form) {
+                form.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const name = document.getElementById("pfName").value.trim();
+                    const email = document.getElementById("pfEmail").value.trim();
+                    const age = document.getElementById("pfAge").value.trim();
+                    const gender = document.getElementById("pfGender").value;
+                    const height = document.getElementById("pfHeight").value.trim();
+                    const weight = document.getElementById("pfWeight").value.trim();
+                    if (!name || !email) {
+                        status.textContent = "⚠️ Name and email are required.";
+                        status.style.color = "#c0392b";
+                        return;
+                    }
+                    if (window.HealthtechAuth) {
+                        window.HealthtechAuth.login(name, email, age || null, gender || null, height || null, weight || null);
+                    }
+                    status.textContent = "✅ Profile updated!";
+                    status.style.color = "#138808";
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

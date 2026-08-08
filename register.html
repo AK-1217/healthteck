@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Create a Healthtech account to save drug & formulation bookmarks, track your favourite systems of medicine and personalize your health profile." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+<title>Register | Healthtech</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="auth-theme register-page">
+    <div id="main-content" class="main-content">
+        <section class="page-banner">
+            <div class="wrap">
+                <h1>Create Account</h1>
+                <p class="breadcrumb"><a href="index.html">Home</a> / Register</p>
+            </div>
+        </section>
+
+        <section class="wrap content-row">
+            <div class="content-main">
+                <div class="auth-card">
+                    <div class="auth-card-head">
+                        <span class="auth-card-icon">📝</span>
+                        <div>
+                            <h2>Join the Healthtech community</h2>
+                            <p>Create an account to save bookmarks &amp; personalize your experience.</p>
+                        </div>
+                    </div>
+
+                    <form id="registerForm">
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="regName">Full name</label>
+                                <input type="text" id="regName" placeholder="Your name" autocomplete="name" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="regAge">Age</label>
+                                <input type="number" id="regAge" placeholder="e.g. 30" min="1" max="120" inputmode="numeric" required />
+                            </div>
+                        </div>
+<div class="form-grid">
+                            <div class="form-group">
+                                <label for="regGender">Gender</label>
+<select id="regGender" required>
+                                    <option value="">Select…</option>
+                                    <option>Male</option>
+                                    <option>Female</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="regEmail">Email address</label>
+                                <input type="email" id="regEmail" placeholder="you@example.com" autocomplete="email" required />
+                            </div>
+                        </div>
+                        <div class="form-grid">
+                            <div class="form-group">
+                                <label for="regHeight">Height <span style="color:var(--muted); font-weight:400;">(cm)</span></label>
+                                <input type="number" id="regHeight" placeholder="e.g. 165" min="50" max="280" step="0.1" inputmode="decimal" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="regWeight">Weight <span style="color:var(--muted); font-weight:400;">(kg)</span></label>
+                                <input type="number" id="regWeight" placeholder="e.g. 62" min="2" max="400" step="0.1" inputmode="decimal" required />
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="regPassword">Password</label>
+                            <input type="password" id="regPassword" placeholder="Create a password (min 6 characters)" autocomplete="new-password" required />
+                        </div>
+                        <button type="submit" class="btn-primary btn-block">Create Account</button>
+                        <div class="form-status" id="registerStatus"></div>
+                        <p style="text-align:center; margin-top:14px; font-size:0.9rem; color:var(--muted);">
+                            Already have an account? <a href="login.html">Sign in</a>.
+                        </p>
+                    </form>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="side-box">
+                    <h3>Why register?</h3>
+                    <ul>
+                        <li>💾 Save drug &amp; formulation bookmarks</li>
+                        <li>📊 Track your favourite systems of medicine</li>
+                        <li>🧘 Personalize your health profile</li>
+                        <li>🔔 Get updates on new resources</li>
+                    </ul>
+                </div>
+                <div class="side-box">
+                    <h3>Your privacy</h3>
+                    <p style="font-size:0.85rem; color:var(--muted);">Your profile details (age &amp; gender) are stored securely and used only to personalize your Healthtech experience.</p>
+                </div>
+            </aside>
+        </section>
+    </div>
+
+    <script src="common.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // If already logged in, go straight to home
+            if (window.HealthtechAuth && window.HealthtechAuth.isLoggedIn()) {
+                window.location.href = "index.html";
+                return;
+            }
+
+            // ---- Register form ----
+            const registerForm = document.getElementById("registerForm");
+            const registerStatus = document.getElementById("registerStatus");
+            if (registerForm) {
+                registerForm.addEventListener("submit", function (e) {
+                    e.preventDefault();
+                    const name = document.getElementById("regName").value.trim();
+                    const age = document.getElementById("regAge").value.trim();
+                    const gender = document.getElementById("regGender").value;
+                    const email = document.getElementById("regEmail").value.trim();
+                    const password = document.getElementById("regPassword").value.trim();
+                    const height = document.getElementById("regHeight").value.trim();
+                    const weight = document.getElementById("regWeight").value.trim();
+
+                    if (!name || !age || !gender || !email || !password || !height || !weight) {
+                        registerStatus.textContent = "⚠️ Please fill in all fields.";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    if (parseInt(age, 10) < 1 || parseInt(age, 10) > 120) {
+                        registerStatus.textContent = "⚠️ Please enter a valid age (1–120).";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    if (parseFloat(height) < 50 || parseFloat(height) > 280) {
+                        registerStatus.textContent = "⚠️ Please enter a valid height (50–280 cm).";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    if (parseFloat(weight) < 2 || parseFloat(weight) > 400) {
+                        registerStatus.textContent = "⚠️ Please enter a valid weight (2–400 kg).";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+                    if (password.length < 6) {
+                        registerStatus.textContent = "⚠️ Password must be at least 6 characters.";
+                        registerStatus.style.color = "#c0392b";
+                        return;
+                    }
+
+                    if (window.HealthtechAuth) {
+                        window.HealthtechAuth.login(name, email, parseInt(age, 10), gender, parseFloat(height), parseFloat(weight));
+                        document.dispatchEvent(new Event("HealthtechAuthChanged"));
+                    }
+                    registerStatus.textContent = "✅ Registration successful! Redirecting…";
+                    registerStatus.style.color = "#138808";
+                    setTimeout(function () { window.location.href = "index.html"; }, 800);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+

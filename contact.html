@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Contact the Healthtech team for queries, feedback and suggestions about traditional systems of medicine." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+    <title>Contact Us | Healthtech</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+    <div id="main-content" class="main-content">
+        <div class="page-banner">
+            <div class="wrap">
+                <h1>Contact Us</h1>
+                <p class="breadcrumb"><a href="index.html">Home</a> / Contact Us</p>
+            </div>
+        </div>
+
+        <main class="wrap content-row">
+            <article class="content-main">
+                <h2>Get in Touch</h2>
+                <p>We welcome your queries, feedback, and suggestions. Please use the form below.</p>
+
+                <form class="contact-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="cName">Full Name *</label>
+                        <input type="text" id="cName" name="name" required placeholder="Your name" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cEmail">Email *</label>
+                        <input type="email" id="cEmail" name="email" required placeholder="you@example.com" />
+                    </div>
+                    <div class="form-group">
+                        <label for="cSubject">Subject</label>
+                        <select id="cSubject" name="subject">
+                            <option>General Enquiry</option>
+                            <option>Drug &amp; Formulation Search</option>
+                            <option>Feedback</option>
+                            <option>Other</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="cMessage">Message *</label>
+                        <textarea id="cMessage" name="message" rows="5" required placeholder="Write your message here..."></textarea>
+                    </div>
+                    <button type="submit" class="btn-primary">Submit</button>
+                    <p class="form-status" id="formStatus"></p>
+                </form>
+
+                <p>
+                    <strong>Note:</strong> This is a demonstration portal. In a live deployment, form submissions
+                    would be routed to a server or email service.
+                </p>
+            </article>
+
+            <aside class="content-side">
+<div class="side-box">
+                    <h3>Reach Us</h3>
+                    <p>
+                        Healthtech<br />
+                        Traditional Systems of Medicine<br />
+                        Educational Resource Portal
+                    </p>
+                </div>
+                <div class="side-box">
+                    <h3>Contact Details</h3>
+                    <ul>
+                        <li>Email: <a href="mailto:info@healthtech.com">info@healthtech.com</a></li>
+                        <li>Helpline: 1800-111-607</li>
+                        <li>Working Hours: Mon–Fri, 9:30 AM – 6:00 PM</li>
+                    </ul>
+                </div>
+            </aside>
+        </main>
+    </div>
+
+    <script>
+        (function () {
+            document.addEventListener("DOMContentLoaded", function () {
+                var form = document.getElementById("contactForm");
+                var status = document.getElementById("formStatus");
+                if (form) {
+                    form.addEventListener("submit", function (e) {
+                        e.preventDefault();
+                        status.textContent = "Thank you! Your message has been submitted (demo).";
+                        status.style.color = "#1f7a3d";
+                        form.reset();
+                    });
+                }
+            });
+        })();
+    </script>
+    <script src="common.js"></script>
+</body>
+</html>

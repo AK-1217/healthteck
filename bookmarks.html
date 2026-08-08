@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="View your saved Ayurvedic drugs & formulations bookmarks on Healthtech." />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%BF%3C/text%3E%3C/svg%3E" />
+    <title>My Bookmarks | Healthtech</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bookmarks-page">
+    <div id="main-content" class="main-content">
+        <section class="page-banner">
+            <div class="wrap">
+                <h1>My Bookmarks</h1>
+                <p class="breadcrumb"><a href="index.html">Home</a> / Bookmarks</p>
+            </div>
+        </section>
+
+        <section class="wrap content-row">
+            <div class="content-main">
+<h2>Saved drugs &amp; formulations</h2>
+                <p>Your saved Ayurvedic recommendations will appear here after you sign in.</p>
+
+                <div class="card-grid" id="bookmarksGrid" style="margin-top:20px;"></div>
+
+                <div class="empty-state" id="bookmarksEmpty" hidden>
+                    <p>No bookmarks yet.</p>
+                    <p class="hint">Tap the ⭐ on any Ayurvedic drug or formulation in the search results to save it here.</p>
+                    <div class="action-row">
+                        <a href="index.html#search" class="btn-primary">Search &amp; Save</a>
+                    </div>
+                </div>
+            </div>
+            <aside class="sidebar">
+                <div class="side-box">
+                    <h3>Account</h3>
+                    <ul>
+                        <li><a href="profile.html">👤 My Profile</a></li>
+                        <li><a href="bookmarks.html">⭐ My Bookmarks</a></li>
+                        <li class="auth-guest-only"><a href="login.html">🔐 Login</a></li>
+                        <li class="auth-guest-only"><a href="register.html">📝 Register</a></li>
+                    </ul>
+                </div>
+            </aside>
+        </section>
+    </div>
+
+<script src="common.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const user = (window.HealthtechAuth && window.HealthtechAuth.getCurrentUser()) || null;
+            if (!user) {
+                window.location.href = "login.html";
+                return;
+            }
+            const greet = document.querySelector(".content-main p");
+            if (greet) {
+                greet.textContent = "Saved recommendations for " + user.name + " — your bookmarked Ayurvedic drugs & formulations.";
+            }
+
+            // ---- Bookmark storage helpers (mirrors app.js keys) ----
+            const BOOKMARK_KEY_PREFIX = "healthtech_bookmarks_";
+            function bookmarkKey() {
+                const id = (user && user.email) || "guest";
+                return BOOKMARK_KEY_PREFIX + id;
+            }
+            function getBookmarks() {
+                try {
+                    const raw = localStorage.getItem(bookmarkKey());
+                    const list = raw ? JSON.parse(raw) : [];
+                    return Array.isArray(list) ? list : [];
+                } catch (e) {
+                    return [];
+                }
+            }
+            function saveBookmarks(list) {
+                try {
+                    localStorage.setItem(bookmarkKey(), JSON.stringify(list));
+                } catch (e) { /* ignore */ }
+            }
+
+            // ---- Render saved bookmarks ----
+            const grid = document.getElementById("bookmarksGrid");
+            const empty = document.getElementById("bookmarksEmpty");
+
+            function renderBookmarks() {
+                const list = getBookmarks();
+                grid.innerHTML = "";
+                empty.hidden = list.length > 0;
+
+                list.forEach((b) => {
+                    const card = document.createElement("div");
+                    card.className = "item-card";
+
+                    const starBtn = document.createElement("button");
+                    starBtn.type = "button";
+                    starBtn.className = "bookmark-btn active";
+                    starBtn.setAttribute("aria-label", "Remove " + b.name + " from bookmarks");
+                    starBtn.innerHTML = "&#9733;";
+                    starBtn.addEventListener("click", () => {
+                        const updated = getBookmarks().filter((x) => x.id !== b.id);
+                        saveBookmarks(updated);
+                        renderBookmarks();
+                        document.dispatchEvent(new CustomEvent("HealthtechBookmarksChanged", {
+                            detail: { id: b.id },
+                        }));
+                    });
+                    card.appendChild(starBtn);
+
+                    const title = document.createElement("h4");
+                    title.textContent = b.name;
+                    card.appendChild(title);
+
+                    (b.book || []).forEach((bk) => {
+                        const bookEl = document.createElement("span");
+                        bookEl.className = "book";
+                        bookEl.textContent = "\uD83D\uDCD6 " + bk;
+                        card.appendChild(bookEl);
+                    });
+
+                    const desc = document.createElement("p");
+                    desc.className = "desc";
+                    desc.textContent = b.description || "";
+                    card.appendChild(desc);
+
+                    const meta = document.createElement("div");
+                    meta.className = "meta";
+                    const typeEl = document.createElement("div");
+                    typeEl.innerHTML = "<strong>Type:</strong> " +
+                        (b.type === "drug" ? "Dravya (Drug)" : "Yoga (Formulation)");
+                    meta.appendChild(typeEl);
+                    card.appendChild(meta);
+
+                    grid.appendChild(card);
+                });
+            }
+
+            renderBookmarks();
+
+            // Refresh if the user un-stars a card on the search page (same tab).
+            document.addEventListener("HealthtechBookmarksChanged", renderBookmarks);
+        });
+    </script>
+</body>
+</html>
+
